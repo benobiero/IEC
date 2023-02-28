@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <table class="table table-success table-striped table-sm table-hover" style=" box-shadow:20px 20px 10px grey;;">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Thematic</th>
+            <th scope="col">Description</th>
+            <th scope="col">Copies In</th>
+            <th scope="col">Copies issued</th>
+            <th scope="col">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for data in all %}
+          <tr>
+            <td>{{data.title}}</td>
+            <td>{{data.thematic}}</td>
+            <td>{{data.description}}</td>
+            <td>{{data.copies}}</td>
+            <td>0</td>
+            <td>{{data.copies}}</td>
+            
+            
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% endblock %}

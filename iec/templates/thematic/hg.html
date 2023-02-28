@@ -1,0 +1,98 @@
+{% include 'base.html' %}
+{% block content %}   
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Main Page</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="navbar-nav">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" href="{%  url 'home' %}">Work Space</a>
+    </div>
+  </div>
+</header>
+
+
+  <div class="row" >
+     {% include 'nav.html' %}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        
+        <h1 class="h2" style="width:100%;text-align: center;height: 40px;color:blue;box-shadow: 30px 20px 20px grey;"> 
+            IEC Materials for H&G - <a href="{% url 'download-hg' %}" style="font-size: large;color: gray;"> Download</a></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">     
+        </div>
+      </div>
+      <div id="my-table">
+      <table class="table table-success table-striped table-sm table-hover" >
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Copies in</th>
+            <th scope="col">Copies Issued</th>
+            <th scope="col">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for data in json_hg %}
+          <tr>
+            <td>{{data.title__name}}</td>
+            <td>{{data.copies_in}}</td>
+            <td>{{data.issued}}</td>
+            <td>{{data.balance}}</td>
+            
+            
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
+    </main>
+    
+    
+  </div>
+
+  
+ <script>
+document.getElementById("download-button").addEventListener("click", function() {
+  // Get the table element
+  var table = document.getElementById("my-table");
+  console.log("Download button clicked!");
+  // Get the Bootstrap styles
+  var styles = '';
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    var rules = sheets[i].cssRules;
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      if (rule.selectorText && (rule.selectorText.indexOf("#my-table") !== -1 || rule.selectorText.indexOf(".table") !== -1)) {
+        styles += rule.cssText;
+      }
+    }
+  }
+
+  // Create a new HTML file with the table content and styles
+  var html = "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Table</title>";
+  html += "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>";
+  html += "<style>" + styles + "</style>";
+  html += "</head><body>";
+  html += table.outerHTML;
+  html += "</body></html>";
+
+  // Trigger the download
+  var a = document.createElement("a");
+  a.href = "data:text/html;charset=utf-8," + encodeURIComponent(html);
+  a.download = "table.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+});
+
+ </script>
+
+{% endblock %}

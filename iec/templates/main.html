@@ -1,0 +1,67 @@
+{% include 'base.html' %}
+{% block content %}   
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Main Page</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="navbar-nav">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" href="{%  url 'home' %}">Work Space</a>
+    </div>
+  </div>
+</header>
+
+
+  <div class="row" >
+     {% include 'nav.html' %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2" style="width:100%;text-align: center;height: 40px;color:blue;box-shadow: 30px 20px 20px grey;"> 
+            IEC Materials for SRHR- <a href="{% url 'download-srhr' %}" style="font-size: large;color: gray;"> Download</a></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">     
+        </div>
+      </div>
+     
+      <table class="table table-success table-striped table-sm table-hover" style=" box-shadow:20px 20px 10px grey;;">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Copies in</th>
+            <th scope="col">Copies Issued</th>
+            <th scope="col">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for data in json_table %}
+          <tr>
+            <td>{{data.title__name}}</td>
+            <td>{{data.copies_in}}</td>
+            <td>{{data.issued}}</td>
+            <td>{{data.balance}}</td>
+            
+            
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+
+    </main>
+  </div>
+
+  
+ <script>
+  document.getElementById("download-button").addEventListener("click", function(){
+    html2canvas(document.querySelector("table")).then(canvas => {
+        let pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
+        pdf.save("table.pdf");
+    });
+});
+
+ </script>
+
+{% endblock %}

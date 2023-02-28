@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IEC App</title>
+
+  <!-- Include Bootstrap CSS from CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+
+  <div class="container">
+    <button id="download-button" class="btn btn-primary">Download Table</button>
+    <br>
+    <h1>WLPR Table</h1>
+  
+
+    <table class="table table-success table-striped table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Thematic</th>
+          <th scope="col">Copies in</th>
+          <th scope="col">Copies Issued</th>
+          <th scope="col">Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in json_hg %}
+          <tr>
+            <td>{{data.title__name}}</td>
+            <td>WLPR</td>
+            <td>{{data.copies_in}}</td>
+            <td>{{data.issued}}</td>
+            <td>{{data.balance}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- Include jQuery and Bootstrap JS from CDN -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <!-- Include download.js script -->
+  
+
+</body>
+<script>
+    // When the Download Table button is clicked
+// When the Download Table button is clicked
+document.getElementById("download-button").addEventListener("click", function() {
+  // Get the table element
+  console.log("Download button clicked!");
+  var table = document.getElementsByTagName("table")[0];
+
+  // Set options for the PDF generation
+  var options = {
+    margin: 1,
+    filename: 'wlpr.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  // Use html2pdf to generate the PDF
+  html2pdf().set(options).from(table).save();
+});
+
+</script>
+</html>
